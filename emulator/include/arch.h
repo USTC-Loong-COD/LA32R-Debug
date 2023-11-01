@@ -5,8 +5,8 @@
 #include <config.h>
 
 // loongarch reg name
-extern const char* reg_name[32];
-extern const char* preg_name[128];
+// extern const char* reg_name[32];
+// extern const char* preg_name[128];
 
 
 // loongarch csr name 
