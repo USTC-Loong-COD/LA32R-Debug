@@ -2,13 +2,9 @@
 
 SIMU_DIR = $(abspath $(WORK_DIR)/../simulator)
 SIMUISO = $(SIMU_DIR)/build/simulator-so
-
-SCALA_DIR = $(abspath $(WORK_DIR)/../LA32R-pipeline-scala)
-
-SCALA_SRCS := $(shell find $(SCALA_DIR)/src/main/scala -name "*.scala")
 CSRCS := $(shell find src/ -name "*.cc")
 
-VERILOG := $(shell find $(SCALA_DIR)/verilog -name "*.sv")
+VERILOG := $(shell find $(VERILOG_DIR) -name "*.v")
 
 all: $(BINARY) 
 
@@ -22,9 +18,6 @@ $(BINARY): $(CSRCS) $(VERILOG)
 	@verilator $(VFLAGS) $(CSRCS) $(CINC_PATH) $(VERILOG_TOP)
 	@echo "$(COLOR_DBLUE)[MAKE]$(COLOR_NONE) $(notdir $(BUILD_DIR))/VCPU"
 	@$(MAKE) -s -C $(BUILD_DIR) -f $(REWRITE) -j8
-
-$(VERILOG): $(SCALA_SRCS)
-	@$(MAKE) -s -C $(SCALA_DIR) verilog
 
 
 ARGS = 

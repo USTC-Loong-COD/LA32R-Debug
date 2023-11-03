@@ -1,7 +1,7 @@
 # .DEFUALT_GOAL = vcpu
 
 WORK_DIR 			= .
-VERILOG_DIR 		= $(WORK_DIR)/../LA32R-pipeline-scala/verilog
+VERILOG_DIR 		= $(WORK_DIR)/verilog
 CC_DIR 				= $(WORK_DIR)/src
 BUILD_DIR 			= $(WORK_DIR)/build
 TAR_DIR 			= $(BUILD_DIR)/obj
