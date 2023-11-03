@@ -6,16 +6,16 @@ CC_DIR 				= $(WORK_DIR)/src
 BUILD_DIR 			= $(WORK_DIR)/build
 TAR_DIR 			= $(BUILD_DIR)/obj
 
-VERILOG_TOP 		= $(VERILOG_DIR)/CPU.sv
+VERILOG_TOP 		= $(VERILOG_DIR)/CPU.v
 VFLAGS 				= --trace --cc --exe -O3 -I$(VERILOG_DIR) -Mdir $(BUILD_DIR) --no-MMD
-VFLAGS 				+= -Wno-UNOPTFLAT -Wno-WIDTHEXPAND --verilate-jobs 8 
+VFLAGS 				+= -Wno-UNOPTFLAT 
 CINC_PATH 			= -CFLAGS -I$(abspath $(WORK_DIR))/include
 
 REWRITE 			= $(abspath $(WORK_DIR))/script/rewrite.mk
 
 
 CSRCS =  $(shell find $(CC_DIR) -name "*.cc")
-VSRCS = $(shell find $(VERILOG_DIR) -name "*.sv")
+VSRCS = $(shell find $(VERILOG_DIR) -name "*.v")
 BINARY = $(BUILD_DIR)/VCPU
 
 IMG = 
