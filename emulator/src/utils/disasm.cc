@@ -1,7 +1,7 @@
 
 #include <iostream>
 #include <bitset>
-
+#include <cstring>
 using namespace std;
 
 
@@ -22,9 +22,10 @@ void disasm(char* buf, uint32_t inst) {
     inst_bit = bitset<32> (inst);
 
     // register file
-    const char *rd = ("$r" + to_string(BITS(inst, 4, 0))).c_str();
-    const char *rj = ("$r" + to_string(BITS(inst, 9, 5))).c_str();
-    const char *rk = ("$r" + to_string(BITS(inst, 14, 10))).c_str();
+    char rd[6], rj[6], rk[6];
+    strcpy(rd, ("$r" + to_string(BITS(inst, 4, 0))).c_str());
+    strcpy(rj, ("$r" + to_string(BITS(inst, 9, 5))).c_str());
+    strcpy(rk, ("$r" + to_string(BITS(inst, 14, 10))).c_str());
 
     if(inst_bit[31]){
         sprintf(buf, "%-16s", "unimp\t");

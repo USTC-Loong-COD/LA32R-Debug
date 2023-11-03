@@ -29,8 +29,8 @@ void print_ilog(){
         std::cout << std::right << std::hex << std::setw(8) << std::setfill('0') << ilog[(ilog_idx+i)%ILOG_SIZE].rf_wdata << std::endl;
     }
 }
-void add_ilog(VCPU* dut){
-    ilog[ilog_idx].pc = dut->pc_WB;
+void add_ilog(VCPU* dut, uint32_t pc){
+    ilog[ilog_idx].pc = pc;
     ilog[ilog_idx].inst = dut->inst_WB;
     ilog[ilog_idx].rf_wdata = dut->rf_wdata_WB;
     ilog_idx = (ilog_idx + 1) % ILOG_SIZE;
@@ -44,17 +44,21 @@ inline bool test_break(uint32_t inst){
 }
 
 void set_cpu_state(VCPU* dut){
-    if(dut->rf_we_WB){
+    if(dut->rf_we_WB && dut->rd_WB != 0){
         cpu.reg[dut->rd_WB] = dut->rf_wdata_WB;
     }
     cpu.pc = dut->pc_WB;
 }
+extern void difftest_step(uint64_t n);
 bool commit_update(VCPU *dut){
     if(dut->commit_WB){
         #ifdef ITRACE
-            if(cpu.state == SIM_RUNNING) add_ilog(dut);
+            if(cpu.state == SIM_RUNNING) add_ilog(dut, cpu.pc);
         #endif
+        
         set_cpu_state(dut);
+        difftest_step(1);
+
 
         if(test_break(dut->inst_WB)){
             cpu.state = SIM_END;
@@ -91,7 +95,7 @@ void reset(){
     dut->eval();
     dut->clk = 1;
     dut->eval();
-    dut->rstn = 0;
+    dut->rstn = 1;
 }
 void cpu_exec(uint64_t n){
     switch(cpu.state){
@@ -104,6 +108,7 @@ void cpu_exec(uint64_t n){
         commit_update(dut);
         if(cpu.state != SIM_RUNNING) break;
         single_cycle();
+        stat.ipc_update(dut->commit_WB);
     }
 #ifdef ITRACE
     print_ilog();
@@ -118,6 +123,7 @@ void cpu_exec(uint64_t n){
         Log("simulation %s at pc = " FMT_WORD, INLINE_FMT("STOP", ANSI_FG_YELLOW), cpu.halt_pc); break;
         break;
     }
+    stat.print_stat();
 }
 
 // void init_statistic(const char* name){

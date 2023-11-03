@@ -116,9 +116,12 @@ static void checkmem(uint8_t *ref_m, paddr_t pc) {
 
 void difftest_step(uint64_t n) {
     CPU_State ref_r;
+
     difftest_exec(n);
     difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
-  // difftest_memcpy(CONFIG_MBASE, ref_pmem, CONFIG_MSIZE, DIFFTEST_TO_DUT);
     checkregs(&ref_r, cpu.pc);
+    
+  // difftest_memcpy(CONFIG_MBASE, ref_pmem, CONFIG_MSIZE, DIFFTEST_TO_DUT);
+    
   // checkmem(ref_pmem, sim_cpu.pc);
 }

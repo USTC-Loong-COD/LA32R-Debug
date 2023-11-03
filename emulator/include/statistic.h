@@ -38,7 +38,7 @@ public:
 
     // void stall_update(VCPU* dut);
 
-    // void print_stat();
+    void print_stat();
 
     // void generate_markdown_report();
 };
