@@ -1,6 +1,6 @@
 # .DEFUALT_GOAL = vcpu
 
-WORK_DIR 			= .
+WORK_DIR 			= $(abspath .)
 VERILOG_DIR 		= $(WORK_DIR)/verilog
 CC_DIR 				= $(WORK_DIR)/src
 BUILD_DIR 			= $(WORK_DIR)/build
